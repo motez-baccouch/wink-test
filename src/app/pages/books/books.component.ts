@@ -18,12 +18,14 @@ export class BooksComponent {
   currentPage: number = 1;
   pageSize: number = 10;
   totalItems: number = 0;
+  pageSizes: number[] = [5, 10, 15, 20];
+  dropdownOpen: boolean = false;
 
   booksService = inject(BookServiceService);
-  cdr = inject(ChangeDetectorRef);  // Inject ChangeDetectorRef
+  cdr = inject(ChangeDetectorRef);
 
   ngOnInit() {
-    this.fetchBooks(); // Fetch books when the component is initialized
+    this.fetchBooks();
   }
 
   fetchBooks() {
@@ -35,9 +37,16 @@ export class BooksComponent {
           if (this.currentPage === 1) {
             this.totalItems = data.totalItems;
           }
-          this.books = data.items.map((item: any) => item.volumeInfo);
-          this.applySearch();
+          this.books = data.items.map((item: any) => ({
+            title: item.volumeInfo?.title || 'No Title',
+            authors: item.volumeInfo?.authors || ['Unknown'],
+            description: item.volumeInfo?.description || 'No Description',
+            categories: item.volumeInfo?.categories || ['N/A'],
+            publishedDate: item.volumeInfo?.publishedDate || 'Unknown',
+            imageLinks: item.volumeInfo?.imageLinks || {},
+          }));
 
+          this.applySearch();
         },
         error: (err) => console.error('Error fetching books:', err),
       });
@@ -59,8 +68,17 @@ export class BooksComponent {
 
   changePage(direction: number) {
     this.currentPage += direction;
-    this.fetchBooks(); // Fetch new set of books for the next page
+    this.fetchBooks();
   }
 
- 
+  toggleDropdown() {
+    this.dropdownOpen = !this.dropdownOpen;
+  }
+
+  setPageSize(size: number) {
+    this.pageSize = size;
+    this.currentPage = 1; // Reset to first page when page size changes
+    this.fetchBooks();
+    this.dropdownOpen = false; // Close dropdown after selection
+  }
 }
