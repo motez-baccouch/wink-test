@@ -14,9 +14,9 @@ import { CommonModule } from '@angular/common';
 export class BooksComponent {
   books: any[] = [];
   filteredBooks: any[] = [];
-  searchQuery: string = '';
+  searchQuery: string = ''; 
   currentPage: number = 1;
-  pageSize: number = 10;
+  pageSize: number = 10;  
   totalItems: number = 0;
   pageSizes: number[] = [5, 10, 15, 20];
   dropdownOpen: boolean = false;
@@ -25,60 +25,79 @@ export class BooksComponent {
   cdr = inject(ChangeDetectorRef);
 
   ngOnInit() {
-    this.fetchBooks();
+  
+    this.fetchBooks(); 
   }
 
-  fetchBooks() {
+
+  fetchBooks(query: string = this.searchQuery.trim()?'':'%7Bsearch') {
     const startIndex = (this.currentPage - 1) * this.pageSize;
+    console.log(`Fetching books with query: ${query} | Page: ${this.currentPage} | StartIndex: ${startIndex}`);
+   
     this.booksService
-      .getBooks(`%7Bsearch&maxResults=${this.pageSize}&startIndex=${startIndex}`)
+      .getBooks(query, this.pageSize, startIndex) 
       .subscribe({
         next: (data) => {
-          if (this.currentPage === 1) {
-            this.totalItems = data.totalItems;
-          }
-          this.books = data.items.map((item: any) => ({
-            title: item.volumeInfo?.title || 'No Title',
-            authors: item.volumeInfo?.authors || ['Unknown'],
-            description: item.volumeInfo?.description || 'No Description',
-            categories: item.volumeInfo?.categories || ['N/A'],
-            publishedDate: item.volumeInfo?.publishedDate || 'Unknown',
-            imageLinks: item.volumeInfo?.imageLinks || {},
-          }));
+          console.log('API response:', data); 
+          if (data.totalItems > 0) {
+   
+            if (this.currentPage === 1) {
+              this.totalItems = data.totalItems;
+            }
+            
+            this.books = data.items.map((item: any) => ({
+              title: item.volumeInfo?.title || 'No Title',
+              authors: item.volumeInfo?.authors || ['Unknown'],
+              description: item.volumeInfo?.description || 'No Description',
+              categories: item.volumeInfo?.categories || ['N/A'],
+              publishedDate: item.volumeInfo?.publishedDate || 'Unknown',
+              imageLinks: item.volumeInfo?.imageLinks || {},
+            }));
 
-          this.applySearch();
+          
+              this.filteredBooks = this.books;
+           
+          } else {
+            console.log('No results found for your search.');
+            this.filteredBooks = []; 
+          }
         },
-        error: (err) => console.error('Error fetching books:', err),
+        error: (err) => {
+          console.error('Error fetching books:', err);
+        },
       });
   }
 
-  filterBooks() {
-    this.applySearch();
-  }
 
-  applySearch() {
-    if (this.searchQuery) {
-      this.filteredBooks = this.books.filter((book) =>
-        book.title.toLowerCase().includes(this.searchQuery.toLowerCase())
-      );
-    } else {
-      this.filteredBooks = [...this.books];
-    }
-  }
+  filterBooks() {}
 
+  
   changePage(direction: number) {
+   
     this.currentPage += direction;
-    this.fetchBooks();
+    this.fetchBooks(this.searchQuery.trim()?this.searchQuery:'%7Bsearch'); 
   }
 
+  
   toggleDropdown() {
     this.dropdownOpen = !this.dropdownOpen;
   }
 
+  
   setPageSize(size: number) {
     this.pageSize = size;
-    this.currentPage = 1; // Reset to first page when page size changes
-    this.fetchBooks();
-    this.dropdownOpen = false; // Close dropdown after selection
+    this.currentPage = 1; 
+    this.fetchBooks(this.searchQuery); 
+    this.dropdownOpen = false; 
+  }
+
+ 
+  onSearch() {
+    if (!this.searchQuery.trim()) {
+      this.searchQuery = '%7Bsearch';
+    }
+    
+    this.currentPage = 1; 
+    this.fetchBooks(this.searchQuery); 
   }
 }
