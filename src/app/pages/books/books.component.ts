@@ -2,6 +2,7 @@ import { Component, inject, ChangeDetectorRef } from '@angular/core';
 import { BookServiceService } from '../../services/book-service.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-books',
@@ -23,6 +24,7 @@ export class BooksComponent {
 
   booksService = inject(BookServiceService);
   cdr = inject(ChangeDetectorRef);
+  router = inject(Router)
 
   ngOnInit() {
   
@@ -100,4 +102,11 @@ export class BooksComponent {
     this.currentPage = 1; 
     this.fetchBooks(this.searchQuery); 
   }
+
+ 
+viewBookDetails(book: any) {
+  this.router.navigate(['/book-detail'], { state: { book, similarBooks: this.books.slice(0, 10) } });
+}
+
+    
 }

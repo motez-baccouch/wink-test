@@ -1,0 +1,19 @@
+/* Remove border from swiper and ensure uniform size for all items */
+
+  .swiper-slide {
+    width: 180px; /* Same size for all items */
+    height: auto; /* Keep aspect ratio of the books */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .swiper-slide img {
+    width: 100%;
+    height: 100%;
+    object-cover: cover;
+    border-radius: 10px;
+  }
+  
+ 
+  

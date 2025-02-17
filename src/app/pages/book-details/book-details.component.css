@@ -1,0 +1,31 @@
+
+.text-blue-500 {
+    color: #3b82f6;
+  }
+  .text-gray-800 {
+    color: #1f2937;
+  }
+  .text-gray-600 {
+    color: #4b5563;
+  }
+  
+  
+  
+  /* Container for zoom effect */
+.hover\:scale-105-container {
+    position: relative; /* Make sure the container allows overflow */
+    overflow: hidden;  /* Hide any parts of the image that go beyond container boundaries */
+  }
+  
+  /* Zoom Effect on Hover for the Image */
+  .hover\:scale-105-container:hover .book-image {
+    transform: scale(1.2); /* Zoom In by 20% */
+  }
+  
+  .book-image {
+    transition: transform 0.3s ease-in-out; /* Smooth zoom */
+    width: 100%;  /* Ensure image fills container */
+    height: 100%; /* Ensure image fills container */
+    object-fit: cover; /* Keep aspect ratio */
+  }
+  

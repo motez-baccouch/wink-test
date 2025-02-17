@@ -1,0 +1,69 @@
+<div class="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg overflow-hidden relative">
+    <!-- Back Button - Fixed at the bottom-right, always visible -->
+    <div class="fixed bottom-6 right-6 z-20">
+      <button
+        (click)="goBack()"
+        class="p-3 bg-blue-500 text-white rounded-full hover:bg-blue-600 shadow-lg"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+    </div>
+  
+    <div class="flex flex-col md:flex-row items-start space-y-6 md:space-y-0 md:space-x-6">
+      <!-- Book Image Section (Left) -->
+      <div class="flex-shrink-0 w-full md:w-[200px] h-[300px] md:h-[350px] hover:scale-105-container">
+        <img
+          *ngIf="book?.imageLinks?.thumbnail"
+          [src]="book.imageLinks.thumbnail"
+          alt="Book Cover"
+          class="book-image w-full h-full object-cover rounded-lg shadow-lg"
+        />
+      </div>
+  
+      <!-- Book Information Section (Right) -->
+      <div class="flex-grow space-y-4">
+        <h1 class="text-2xl font-bold text-gray-800">{{ book?.title }}</h1>
+        <h2 class="text-xl font-semibold text-gray-600">{{ book?.authors?.join(', ') }}</h2>
+  
+        <!-- Book Details -->
+        <div class="text-gray-700">
+          <p><strong>Publisher:</strong> {{ book?.publisher || 'Not Provided' }}</p>
+          <p><strong>Published Date:</strong> {{ book?.publishedDate }}</p>
+          <p><strong>Categories:</strong> {{ book?.categories?.join(', ') }}</p>
+          <p><strong>Page Count:</strong> {{ book?.pageCount || 'Not Provided' }}</p>
+          <p><strong>ISBN:</strong> {{ bookISBN }}</p>
+        </div>
+  
+        <!-- Description Section -->
+        <div class="mt-4">
+          <p><strong>Description:</strong></p>
+  
+          <!-- Truncated Description -->
+          <p *ngIf="book?.description && !isDescriptionExpanded" class="line-clamp-3 text-gray-600">
+            {{ book?.description | slice: 0:maxDescriptionLength }}...
+          </p>
+  
+          <p *ngIf="isDescriptionExpanded" class="mt-2 text-gray-600">{{ book?.description }}</p>
+  
+          <!-- Show More Button -->
+          <button
+            *ngIf="book?.description?.length > maxDescriptionLength"
+            (click)="toggleDescription()"
+            class="text-blue-500 mt-2 cursor-pointer hover:underline"
+          >
+            {{ isDescriptionExpanded ? 'Show Less' : 'Show More' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Line Above Swiper -->
+    <hr class="my-6 border-t-2 border-gray-200">
+  
+    <!-- Similar Books Section -->
+    <h3 class="text-2xl font-semibold mb-4 text-gray-800">Similar Books</h3>
+    <app-swiper [books]="similarBooks"></app-swiper>
+  </div>
+  
