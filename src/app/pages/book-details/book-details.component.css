@@ -11,21 +11,20 @@
   
   
   
-  /* Container for zoom effect */
+
 .hover\:scale-105-container {
-    position: relative; /* Make sure the container allows overflow */
-    overflow: hidden;  /* Hide any parts of the image that go beyond container boundaries */
+    position: relative; 
+    overflow: hidden;  
   }
-  
-  /* Zoom Effect on Hover for the Image */
+
   .hover\:scale-105-container:hover .book-image {
-    transform: scale(1.2); /* Zoom In by 20% */
+    transform: scale(1.2); 
   }
   
   .book-image {
-    transition: transform 0.3s ease-in-out; /* Smooth zoom */
-    width: 100%;  /* Ensure image fills container */
-    height: 100%; /* Ensure image fills container */
-    object-fit: cover; /* Keep aspect ratio */
+    transition: transform 0.3s ease-in-out; 
+    width: 100%;  
+    height: 100%; 
+    object-fit: cover; 
   }
   
