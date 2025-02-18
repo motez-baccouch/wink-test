@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { SwiperComponent } from '../../components/swiper/swiper.component';
+import { Book } from '../../models/book.model';
 
 // Define the type for the 'industryIdentifiers' array items
 interface IndustryIdentifier {
@@ -17,43 +18,41 @@ interface IndustryIdentifier {
   imports: [CommonModule, SwiperComponent],
 })
 export class BookDetailComponent {
-  book: any;
-  similarBooks: any[] = [];
-  isDescriptionExpanded = false;
-  maxDescriptionLength = 200; // Limit for the visible description
-  bookISBN: string = '';  // New variable for ISBN
+  public book: Book;
+  public similarBooks: any[] = [];
+  public isDescriptionExpanded = false;
+  public maxDescriptionLength = 200; 
+  public bookISBN: string = '';  
 
-  router = inject(Router);
+  private router = inject(Router);
 
   constructor(private location: Location) {
     const state = this.location.getState() as any;
     this.book = state.book || null;
     this.similarBooks = state.similarBooks || [];
   
-    // Remove the current book from the similarBooks list
     if (this.book) {
       this.similarBooks = this.similarBooks.filter(b => b.title !== this.book.title);
     }
-  
-    // Set ISBN (handling logic inside the component)
-    if (this.book?.industryIdentifiers?.length > 0) {
-      this.bookISBN = this.book?.industryIdentifiers?.map((id: IndustryIdentifier) => id.identifier).join(', ');
+
+    if (this.book && this.book.industryIdentifiers && this.book.industryIdentifiers.length > 0) {
+      this.bookISBN = this.book.industryIdentifiers.map((id: IndustryIdentifier) => id.identifier).join(', ');
     } else {
       this.bookISBN = 'No ISBN available';
     }
+    
   }
   
 
-  goBack() {
+  public goBack() {
     this.router.navigate(['/books']);
   }
 
-  viewBookDetails(similarBook: any) {
+  public viewBookDetails(similarBook: any) {
     this.router.navigate(['/book-detail'], { state: { book: similarBook } });
   }
 
-  // Toggle description view
-  toggleDescription() {
+  public toggleDescription() {
     this.isDescriptionExpanded = !this.isDescriptionExpanded;
   }
 }

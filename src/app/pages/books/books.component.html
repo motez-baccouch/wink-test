@@ -71,20 +71,20 @@
             {{ book.title }}
         </td>
         <td class="p-3 text-sm text-slate-500 truncate max-w-[180px]" 
-            title="{{ book.authors?.join(', ') || 'Unknown' }}">
-            {{ book.authors?.join(', ') || 'Unknown' }}
+            title="{{ book.authors.join(', ') || 'Unknown' }}">
+            {{ book.authors.join(', ') || 'Unknown' }}
         </td>
         <td class="p-3 text-sm text-slate-500 truncate max-w-[250px]" 
             title="{{ book.description }}">
             {{ book.description }}
         </td>
         <td class="p-3 text-sm text-slate-500 truncate max-w-[160px]" 
-            title="{{ book.categories?.join(', ') || 'N/A' }}">
-            {{ book.categories?.join(', ') || 'N/A' }}
+            title="{{ book.categories.join(', ') || 'N/A' }}">
+            {{ book.categories.join(', ') || 'N/A' }}
         </td>
         <td class="p-3 text-sm text-slate-500 truncate">{{ book.publishedDate }}</td>
         <td class="p-3 text-center">
-            <img *ngIf="book.imageLinks?.thumbnail" 
+            <img *ngIf="book.imageLinks.thumbnail" 
                  [src]="book.imageLinks.thumbnail" 
                  alt="Book Cover"
                  class="w-[65px] h-[85px] object-cover rounded shadow-sm">
