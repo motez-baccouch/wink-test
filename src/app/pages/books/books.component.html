@@ -1,4 +1,14 @@
 <div class="max-w-[1100px] mx-auto">
+  <div class="fixed bottom-6 right-6 z-20">
+    <button
+      (click)="goBack()"
+      class="p-3 bg-blue-500 text-white rounded-full hover:bg-blue-600 shadow-lg"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+    </button>
+  </div>
     <div class="w-full flex justify-between items-center mb-3 mt-1 pl-3">
       <!-- Left Section (Title & Overview) -->
       <div>
@@ -22,17 +32,21 @@
           </button>
   
           <!-- Dropdown Menu -->
-          <div *ngIf="dropdownOpen" class="absolute right-0 z-10 mt-2 w-24 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden">
+           @if(dropdownOpen){
+          <div  class="absolute right-0 z-10 mt-2 w-24 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden">
             <div class="py-1">
+              @for( size of pageSizes ; track size){
               <button 
-                *ngFor="let size of pageSizes" 
+                
                 (click)="setPageSize(size)" 
                 class="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               >
                 {{ size }}
               </button>
+            }
             </div>
           </div>
+        }
         </div>
   
         <!-- Search Input -->
@@ -61,8 +75,9 @@
           </tr>
         </thead>
         <tbody>
+          @for(book of filteredBooks ; track book){
     <tr 
-        *ngFor="let book of filteredBooks" 
+        
         class="hover:bg-slate-50 border-b border-slate-200 cursor-pointer"
         (click)="viewBookDetails(book)">
         <td class="p-3 text-sm text-slate-800 truncate max-w-[200px]" 
@@ -84,12 +99,15 @@
         </td>
         <td class="p-3 text-sm text-slate-500 truncate">{{ book.publishedDate }}</td>
         <td class="p-3 text-center">
-            <img *ngIf="book.imageLinks.thumbnail" 
-                 [src]="book.imageLinks.thumbnail" 
-                 alt="Book Cover"
-                 class="w-[65px] h-[85px] object-cover rounded shadow-sm">
-        </td>
+          @if(book.imageLinks.thumbnail){
+          <img 
+               [src]="book.imageLinks.thumbnail" 
+               alt="Book Cover"
+               class="w-[65px] h-[85px] object-cover rounded shadow-sm mx-auto">}
+      </td>
+      
     </tr>
+  }
 </tbody>
 
       </table>

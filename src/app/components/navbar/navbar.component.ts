@@ -10,9 +10,8 @@ import { Component } from '@angular/core';
 })
 export class NavbarComponent {
 
-  isMenuOpen = false; // Variable to track the state of the menu
+  isMenuOpen = false; 
 
-  // Toggle the mobile menu state
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
   }

@@ -18,7 +18,7 @@ export class FrontPageComponent {
 
   onSearch() {
     if (this.searchQuery.trim()) {
-      this.router.navigate(['/books'], { queryParams: { search: this.searchQuery } });
+      this.router.navigate(['/books'], { queryParams: { query: this.searchQuery } });
     }
   }
 }
